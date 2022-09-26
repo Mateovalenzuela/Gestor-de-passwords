@@ -1,0 +1,128 @@
+{% extends "./plantilla.html" %}
+
+{% block title %}Trabajo práctico 1{% endblock %}
+
+
+{% block body %}
+
+<div class="row">
+    <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-dismissible alert-success">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            <strong class="text-dark">{{ message }}</strong>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <h2>Agregar persona</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="registrarPersona/" method="POST"> {% csrf_token %}
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtNombre" name="txtNombre" class="form-control"
+                               placeholder="Nombre" maxlength="50" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtApellido" name="txtApellido" class="form-control"
+                               placeholder="Apellido" maxlength="50" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtApodo" name="txtApodo" class="form-control"
+                               placeholder="Apodo" maxlength="50" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtSexo" name="txtSexo" class="form-control"
+                               placeholder="Sexo" maxlength="50" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtNacionalidad" name="txtNacionalidad" class="form-control"
+                               placeholder="Nacionalidad" maxlength="50" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="date" id="txtFechaNac" name="txtFechaNac" class="form-control"
+                               placeholder="Fecha de nacimiento" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="checkbox" id="txtEsFeliz" name="txtEsFeliz"  value="True" class="form-check-input"
+                               placeholder="Es feliz?"> Es feliz?
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="number" id="txtEdad" name="txtEdad" class="form-control"
+                               placeholder="Edad" max="150" min="1" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtDni" name="txtDni" class="form-control"
+                               placeholder="Dni" max="100000000" min="0" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="number" step="0.01" id="txtAltura" name="txtAltura" class="form-control"
+                               placeholder="Altura" required>
+                    </div>
+
+
+                    <div class="form-grup py-1">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+        <h1>Listado de personas</h1>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Apodo</th>
+                        <th>Sexo</th>
+                        <th>Nacionalidad</th>
+                        <th>Fecha nacimento</th>
+                        <th>Es feliz?</th>
+                        <th>Edad</th>
+                        <th>Dni</th>
+                        <th>Altura</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in personas%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td> {{i.id}}</td>
+                        <td> {{i.nombre}}</td>
+                        <td> {{i.apellido}}</td>
+                        <td> {{i.apodo}}</td>
+                        <td> {{i.sexo}}</td>
+                        <td> {{i.nacionalidad}}</td>
+                        <td> {{i.nacimiento}}</td>
+                        <td> {{i.feliz}}</td>
+                        <td> {{i.edad}}</td>
+                        <td> {{i.dni}}</td>
+                        <td> {{i.altura}}</td>
+                        <td> <a href="edicionPersona/{{i.id}}" class="btn btn-info">Editar</a></td>
+                        <td> <a href="eliminarPersona/{{i.id}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
