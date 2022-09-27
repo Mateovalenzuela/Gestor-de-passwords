@@ -34,3 +34,28 @@ class ClsPersonas(models.Model):
 
     class Meta:
         db_table = 'Personas'
+
+
+class ClsFacturas(models.Model):
+    titular = models.CharField(max_length=50)
+    direcion = models.CharField(max_length=50)
+    fecha = None
+    nroPedido = models.IntegerField()
+    nroFactura = models.IntegerField()
+    fechaVencimiento = None
+
+    class Meta:
+        db_table = 'Facturas'
+
+
+
+class ClsDetalleFactura(models.Model):
+    cantidad = models.IntegerField()
+    producto = models.CharField(max_length=500)
+    precioUnitario = models.FloatField()
+    importe = models.FloatField()
+    total = models.FloatField()
+
+    class Meta:
+        db_table = 'DetallesFactura'
+
