@@ -126,5 +126,3 @@ class ClsPersonaDao:
         varPersona = cls.obtenerPersonaPorId(id)
         varPersona.delete()
 
-
-
