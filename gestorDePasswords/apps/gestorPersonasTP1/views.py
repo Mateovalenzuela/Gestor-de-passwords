@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from negocio.personaDao import *
+from negocio.persona import *
 
 
 # Create your views here.
 
 def home(request):
-    varPersonas = ClsPersonaDao.obtenerTodasLasPersonas()
+    varPersonas = ClsPersonaDao.obtenerTodos()
     messages.success(request, '¡Personas listadas!')
     return render(request, "gestionPersonas.html", {"personas": varPersonas})
 
@@ -26,15 +27,19 @@ def registrarPersona(request):
     if not varEsFeliz:
         varEsFeliz = False
 
-    ClsPersonaDao.registrarPersona(varNombre, varApellido, varApodo, varSexo, varNacionalidad, varFechaNac,
-                                   varEsFeliz, varEdad, varDni, varAltura)
+    varObjPersona = ClsPersonas(None, varNombre, varApellido, varApodo, varSexo, varNacionalidad, varFechaNac,
+                                varEsFeliz, varEdad, varDni, varAltura)
+    ClsPersonaDao.insertarPersona(varObjPersona)
 
     messages.success(request, '¡Persona registrada!')
+    print(varFechaNac)
+    print(varEsFeliz)
     return redirect('/trabajoPractico1/')
 
 
 def edicionPersona(request, varId):
-    varPersona = ClsPersonaDao.obtenerPersonaPorId(varId)
+    varObjPersona = ClsPersonas(varId)
+    varPersona = ClsPersonaDao.obtenerPorId(varObjPersona)
 
     return render(request, "edicionPersona.html", {"persona": varPersona})
 
@@ -55,8 +60,10 @@ def editarPersona(request):
     if not varEsFeliz:
         varEsFeliz = False
 
-    ClsPersonaDao.actualizarPersona(varId, varNombre, varApellido, varApodo, varSexo, varNacionalidad, varFechaNac,
-                                    varEsFeliz, varEdad, varDni, varAltura)
+    varObjPersona = ClsPersonas(varId, varNombre, varApellido, varApodo, varSexo, varNacionalidad, varFechaNac,
+                                varEsFeliz, varEdad, varDni, varAltura)
+
+    ClsPersonaDao.actualizarPersona(varObjPersona)
 
     messages.success(request, '¡Persona actualizada!')
 
@@ -64,9 +71,8 @@ def editarPersona(request):
 
 
 def eliminarPersona(request, varId):
-    ClsPersonaDao.eliminarPersona(varId)
+    varObjPersona = ClsPersonas(varId, None, None, None, None, None, None, None, None, None, None)
+    ClsPersonaDao.eliminarPersona(varObjPersona)
 
     messages.success(request, '¡Persona eliminada!')
     return redirect('/trabajoPractico1/')
-
-

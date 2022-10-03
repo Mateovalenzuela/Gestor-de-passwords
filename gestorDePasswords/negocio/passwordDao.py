@@ -11,8 +11,13 @@ class ClsPasswordDao:
 
     @classmethod
     def obtenerTodos(cls):
-        varListaTodosPasswords = ClsConexion.ejecutarSelect(cls.SELECCIONAR)
-        return varListaTodosPasswords
+        varCursor = ClsConexion.ejecutarSql(cls.SELECCIONAR)
+        varRegistros = varCursor.fetchall()
+        varListPasswords = []
+        for registro in varRegistros:
+            password = ClsPasswords(registro[0], registro[1], registro[2], registro[3])
+            varListPasswords.append(password)
+        return varListPasswords
 
     @classmethod
     def insertarPassword(cls, objPassword):
@@ -44,8 +49,11 @@ class ClsPasswordDao:
     def obtenerPorId(cls, objPassword):
         varId = objPassword.id
         SELECCIONAR_POR_ID = cls.SELECCIONAR_POR_ID + f'id={varId}'
-        varPassword = ClsConexion.ejecutarSelectPorId(SELECCIONAR_POR_ID)
-        return varPassword
+        varCursor = ClsConexion.ejecutarSql(SELECCIONAR_POR_ID)
+        varRegistro = varCursor.fetchone()
+        objPassword = ClsPasswords(varRegistro[0], varRegistro[1], varRegistro[2], varRegistro[3])
+        return objPassword
+
 
 
 if __name__ == '__main__':

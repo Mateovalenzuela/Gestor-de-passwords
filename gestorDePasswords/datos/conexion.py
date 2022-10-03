@@ -1,10 +1,9 @@
 import sqlite3
 import sys
-from negocio.password import ClsPasswords
 
 
 class ClsConexion:
-    varRutaBd = 'test.s3db'
+    varRutaBd = '../dataBases/dbPrincipal.s3db'
     _conexion = None
     _cursor = None
 
@@ -39,27 +38,7 @@ class ClsConexion:
         with ClsConexion.obtenerConexion() as conexion:
             varCursor = conexion.cursor()
             varCursor.execute(sql)
-
-    @classmethod
-    def ejecutarSelect(cls, sql):
-        with ClsConexion.obtenerConexion():
-            varCursor = ClsConexion.obtenerCursor()
-            varCursor.execute(sql)
-            varRegistros = varCursor.fetchall()
-            varListPasswords = []
-            for registro in varRegistros:
-                password = ClsPasswords(registro[0], registro[1], registro[2], registro[3])
-                varListPasswords.append(password)
-            return varListPasswords
-
-    @classmethod
-    def ejecutarSelectPorId(cls, sql):
-        with ClsConexion.obtenerConexion():
-            varCursor = ClsConexion.obtenerCursor()
-            varCursor.execute(sql)
-            varRegistro = varCursor.fetchone()
-            objPassword = ClsPasswords(varRegistro[0], varRegistro[1], varRegistro[2], varRegistro[3])
-            return objPassword
+            return varCursor
 
 
 if __name__ == '__main__':
