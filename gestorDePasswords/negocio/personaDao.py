@@ -1,130 +1,82 @@
-from datos.models import *
+from datos.conexion import *
+from .persona import *
 
 
 class ClsPersonaDao:
-
-    def __init__(self):
-        self.__id = None
-        self.__nombre = None
-        self.__apellido = None
-        self.__apodo = None
-        self.__sexo = None
-        self.__nacionalidad = None
-        self.__nacimiento = None
-        self.__feliz = None
-        self.__edad = None
-        self.__dni = None
-        self.__altura = None
-
-    def getId(self):
-        return self.__id
-
-    def getNombre(self):
-        return self.__nombre
-
-    def setNombre(self, nombre):
-        self.__nombre = nombre
-
-    def getApellido(self):
-        return self.__apellido
-
-    def setApellido(self, apellido):
-        self.__apellido = apellido
-
-    def getApodo(self):
-        return self.__apodo
-
-    def setApodo(self, apodo):
-        self.__apodo = apodo
-
-    def getSexo(self):
-        return self.__sexo
-
-    def setSexo(self, sexo):
-        self.__sexo = sexo
-
-    def getNacionalidad(self):
-        return self.__nacionalidad
-
-    def setNacionalidad(self, nacionalidad):
-        self.__nacionalidad = nacionalidad
-
-    def getFeliz(self):
-        return self.__feliz
-
-    def setFeliz(self, esFeliz):
-        self.__feliz = esFeliz
-
-    def getNacimiento(self):
-        return self.__nacimiento
-
-    def setNacimiento(self, fechaNac):
-        self.__nacimiento = fechaNac
-
-    def getEdad(self):
-        return self.__edad
-
-    def setEdad(self, edad):
-        self.__edad = edad
-
-    def getDni(self):
-        return self.__dni
-
-    def setDni(self, dni):
-        self.__dni = dni
-
-    def getAltura(self):
-        return self.__altura
-
-    def setAltura(self, altura):
-        self.__altura = altura
-
-    def cargarPropiedades(self, id):
-        varPersona = ClsPersonas.objects.get(id=id)
-        ClsPersonaDao.setNombre(self, varPersona.nombre)
-        ClsPersonaDao.setApellido(self, varPersona.apellido)
-        ClsPersonaDao.setApodo(self, varPersona.apodo)
-        ClsPersonaDao.setSexo(self, varPersona.sexo)
-        ClsPersonaDao.setNacionalidad(self, varPersona.nacionalidad)
-        ClsPersonaDao.setNacimiento(self, varPersona.nacimiento)
-        ClsPersonaDao.setFeliz(self, varPersona.feliz)
-        ClsPersonaDao.setEdad(self, varPersona.edad)
-        ClsPersonaDao.setDni(self, varPersona.dni)
-        ClsPersonaDao.setAltura(self, varPersona.altura)
+    SELECCIONAR = 'SELECT * FROM Personas ORDER BY id'
+    SELECCIONAR_POR_ID = 'SELECT * FROM Personas WHERE '
+    INSERTAR = 'INSERT INTO Personas(nombre, apellido, apodo, sexo, nacionalidad, nacimiento, feliz, edad, dni, altura) VALUES'
+    UPDATE = 'UPDATE Personas SET '
+    ELIMINAR = 'DELETE FROM Personas WHERE '
 
     @classmethod
-    def obtenerTodasLasPersonas(cls):
-        return ClsPersonas.objects.all()
+    def obtenerTodos(cls):
+        varCursor = ClsConexion.ejecutarSql(cls.SELECCIONAR)
+        varRegistros = varCursor.fetchall()
+        varListPersonas = []
+        for registro in varRegistros:
+            varPersona = ClsPersonas(registro[0], registro[1], registro[2], registro[3], registro[4], registro[5],
+                                     registro[6], registro[7], registro[8], registro[9], registro[10])
+            varListPersonas.append(varPersona)
+        return varListPersonas
 
     @classmethod
-    def registrarPersona(cls, nombre, apellido, apodo, sexo, nacionalidad, fechaNac, esFeliz, edad, dni, altura):
-        ClsPersonas.objects.create(nombre=nombre, apellido=apellido, apodo=apodo, sexo=sexo, nacionalidad=nacionalidad,
-                                   nacimiento=fechaNac, feliz=esFeliz, edad=edad, dni=dni, altura=altura)
+    def insertarPersona(cls, objPersona):
+        varNombre = objPersona.nombre
+        varApellido = objPersona.apellido
+        varApodo = objPersona.apodo
+        varSexo = objPersona.sexo
+        varNacionalidad = objPersona.nacionalidad
+        varFechaNacimiento = objPersona.nacimiento
+        varEsFeliz = objPersona.feliz
+        varEdad = objPersona.edad
+        varDni = objPersona.dni
+        varAltura = objPersona.altura
+        INSERT = cls.INSERTAR + f'''(\'{varNombre}\', \'{varApellido}\', \'{varApodo}\', \'{varSexo}\', \'{varNacionalidad}\',
+\'{varFechaNacimiento}\', {varEsFeliz}, {varEdad}, {varDni}, {varAltura})'''
+        ClsConexion.ejecutarSql(INSERT)
 
     @classmethod
-    def obtenerPersonaPorId(cls, id):
-        return ClsPersonas.objects.get(id=id)
+    def actualizarPersona(cls, objPersona):
+        varId = objPersona.id
+        varNombre = objPersona.nombre
+        varApellido = objPersona.apellido
+        varApodo = objPersona.apodo
+        varSexo = objPersona.sexo
+        varNacionalidad = objPersona.nacionalidad
+        varFechaNacimiento = objPersona.nacimiento
+        varEsFeliz = objPersona.feliz
+        varEdad = objPersona.edad
+        varDni = objPersona.dni
+        varAltura = objPersona.altura
+        UPDATE = cls.UPDATE + f'''nombre=\'{varNombre}\', apellido=\'{varApellido}\', apodo=\'{varApodo}\', 
+        sexo=\'{varSexo}\', nacionalidad=\'{varNacionalidad}\', nacimiento=\'{varFechaNacimiento}\', feliz={varEsFeliz}, 
+        edad={varEdad}, dni={varDni}, altura={varAltura} WHERE id={varId}'''
+        ClsConexion.ejecutarSql(UPDATE)
 
     @classmethod
-    def actualizarPersona(cls, id, nombre, apellido, apodo, sexo, nacionalidad, fechaNac, esFeliz, edad, dni, altura):
-        varPersona = cls.obtenerPersonaPorId(id)
-        varPersona.nombre = nombre
-        varPersona.apellido = apellido
-        varPersona.apodo = apodo
-        varPersona.sexo = sexo
-        varPersona.nacionalidad = nacionalidad
-        varPersona.nacimiento = fechaNac
-        varPersona.feliz = esFeliz
-        varPersona.edad = edad
-        varPersona.dni = dni
-        varPersona.altura = altura
-
-        varPersona.save()
+    def eliminarPersona(cls, objPersona):
+        varId = objPersona.id
+        ELIMINAR = cls.ELIMINAR + f'id={varId}'
+        ClsConexion.ejecutarSql(ELIMINAR)
 
     @classmethod
-    def eliminarPersona(cls, id):
-        varPersona = cls.obtenerPersonaPorId(id)
-        varPersona.delete()
+    def obtenerPorId(cls, objPersona):
+        varId = objPersona.id
+        SELECCIONAR_POR_ID = cls.SELECCIONAR_POR_ID + f'id={varId}'
+        varCursor = ClsConexion.ejecutarSql(SELECCIONAR_POR_ID)
+        varRegistro = varCursor.fetchone()
+        varObjPersona = ClsPersonas(varRegistro[0], varRegistro[1], varRegistro[2], varRegistro[3], varRegistro[4],
+                                    varRegistro[5], varRegistro[6], varRegistro[7], varRegistro[8], varRegistro[9],
+                                    varRegistro[10])
+        return varObjPersona
 
 
+if __name__ == '__main__':
+    objPassword = ClsPersonas(1)
+    print(ClsPersonaDao.obtenerPorId(objPassword))
 
+    # passwords = ClsPasswordDao.obtenerTodos()
+
+    # for i in passwords:
+    # print(i)
