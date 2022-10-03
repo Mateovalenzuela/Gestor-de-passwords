@@ -35,7 +35,6 @@ class ClsPersonaDao:
         INSERT = cls.INSERTAR + f'''(\'{varNombre}\', \'{varApellido}\', \'{varApodo}\', \'{varSexo}\', \'{varNacionalidad}\',
 \'{varFechaNacimiento}\', {varEsFeliz}, {varEdad}, {varDni}, {varAltura})'''
         ClsConexion.ejecutarSql(INSERT)
-        print(f'password insertada: {objPersona}')
 
     @classmethod
     def actualizarPersona(cls, objPersona):
@@ -54,14 +53,12 @@ class ClsPersonaDao:
         sexo=\'{varSexo}\', nacionalidad=\'{varNacionalidad}\', nacimiento=\'{varFechaNacimiento}\', feliz={varEsFeliz}, 
         edad={varEdad}, dni={varDni}, altura={varAltura} WHERE id={varId}'''
         ClsConexion.ejecutarSql(UPDATE)
-        print(f'password actualizada: {objPersona}')
 
     @classmethod
     def eliminarPersona(cls, objPersona):
         varId = objPersona.id
         ELIMINAR = cls.ELIMINAR + f'id={varId}'
         ClsConexion.ejecutarSql(ELIMINAR)
-        print(f'persona eliminada {objPersona}')
 
     @classmethod
     def obtenerPorId(cls, objPersona):

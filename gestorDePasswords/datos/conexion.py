@@ -12,7 +12,6 @@ class ClsConexion:
         if cls._conexion is None:
             try:
                 cls._conexion = sqlite3.connect(cls.varRutaBd)
-                print(f'Conexion exitosa: {cls._conexion}')
                 return cls._conexion
             except Exception as e:
                 print(f'Ocurrió un error: {e}')
@@ -25,7 +24,6 @@ class ClsConexion:
         if cls._cursor is None:
             try:
                 cls._cursor = cls.obtenerConexion().cursor()
-                print(f'Se abrió correctamente el cursor: {cls._cursor}')
                 return cls._cursor
             except Exception as e:
                 print(f'Ocurrió una exepción al obtener el cursor: {e}')
