@@ -11,7 +11,7 @@ class ClsConexion:
     def obtenerConexion(cls):
         if cls._conexion is None:
             try:
-                cls._conexion = sqlite3.connect(cls.varRutaBd)
+                cls._conexion = sqlite3.connect(cls.varRutaBd, check_same_thread=False)
                 return cls._conexion
             except Exception as e:
                 print(f'Ocurrió un error: {e}')
