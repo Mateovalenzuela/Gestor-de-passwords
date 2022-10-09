@@ -1,0 +1,57 @@
+{% extends "./plantilla.html" %}
+
+{% block title %} Maestro Detalle {% endblock %}
+
+
+{% block body %}
+<div class="row">
+    <a href="gestionCabecera/" class="btn btn-info">Agregar cabecera</a>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h1>Detalles</h1>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Precio por unidad</th>
+                        <th>Importe</th>
+                        <th>% de impuesto</th>
+                        <th>Total</th>
+                        <th colspan="2">Opciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in detalles%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td> {{i.id}}</td>
+                        <td> {{i.producto}}</td>
+                        <td> {{i.cantidad}}</td>
+                        <td> {{i.descripcion}}</td>
+                        <td> {{i.precioUnitario}}</td>
+                        <td> {{i.importe}}</td>
+                        <td> {{i.impuesto}}</td>
+                        <td> {{i.total}}</td>
+                        <td> <a href="edicionPersona/{{i.id}}" class="btn btn-info">Editar</a></td>
+                        <td> <a href="eliminarPersona/{{i.id}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <a href="gestionDetalle/" class="btn btn-info">Agregar detalle</a>
+</div>
+
+{% endblock %}
