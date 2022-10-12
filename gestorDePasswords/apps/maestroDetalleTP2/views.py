@@ -8,8 +8,10 @@ from negocio.detalleFactura import ClsDetallesFactura
 
 def home(request):
     varObjDetalle = ClsDetallesFactura.listaObjetosDetalle
+    varObjCabecera = ClsFacturas.listaObjetosCabecera
     # messages.success(request, '¡Personas listadas!')
-    return render(request, "gestionFacturas.html", {"detalles": varObjDetalle})
+
+    return render(request, "gestionFacturas.html", {"detalles": varObjDetalle, "cabecera": varObjCabecera})
 
 
 def gestionCabecera(request):
@@ -23,7 +25,7 @@ def agregarCabecera(request):
 
     objCabeceraFactura = ClsFacturas(None, varTitular, varDireccion, None, varFechaVencimiento, None)
 
-    print(objCabeceraFactura.titular)
+    ClsFacturas.listaObjetosCabecera.append(objCabeceraFactura)
 
     return redirect('/maestroDetalleTP2/')
 
@@ -42,8 +44,6 @@ def agregarDetalle(request):
     objDetalleFactura = ClsDetallesFactura(None, varProducto, varCantidad, varDescripcion, varPrecioUnitario,
                                            varImpuesto)
     ClsDetallesFactura.listaObjetosDetalle.append(objDetalleFactura)
-
-    print(objDetalleFactura.producto)
 
     return redirect('/maestroDetalleTP2/')
 
