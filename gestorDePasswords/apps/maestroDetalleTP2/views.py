@@ -2,16 +2,22 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from negocio.factura import ClsFacturas
 from negocio.detalleFactura import ClsDetallesFactura
+from negocio.producto import ClsProductos
+from negocio.productoDao import ClsProductosDao
 
 
 # Create your views here.
 
 def home(request):
-    varObjDetalle = ClsDetallesFactura.listaObjetosDetalle
+    varObjDetalle = ClsDetallesFactura.varObjetoDetalle
     varObjCabecera = ClsFacturas.listaObjetosCabecera
     # messages.success(request, '¡Personas listadas!')
 
-    return render(request, "gestionFacturas.html", {"detalles": varObjDetalle, "cabecera": varObjCabecera})
+    if varObjDetalle is None:
+        varObjDetalle = ClsDetallesFactura()
+
+    return render(request, "gestionFacturas.html",
+                  {"productos": varObjDetalle.listaDeProductos, "cabecera": varObjCabecera})
 
 
 def gestionCabecera(request):
@@ -30,48 +36,57 @@ def agregarCabecera(request):
     return redirect('/maestroDetalleTP2/')
 
 
-def gestionDetalle(request):
-    return render(request, "agregarDetalle.html")
+def gestionProducto(request):
+    return render(request, "agregarProducto.html")
 
 
-def agregarDetalle(request):
+def agregarProducto(request):
     varProducto = request.POST['txtProducto']
     varCantidad = request.POST['txtCantidad']
     varDescripcion = request.POST['txtDescripcion']
     varPrecioUnitario = request.POST['txtPrecioUnitario']
-    varImpuesto = request.POST['txtImpuesto']
 
-    objDetalleFactura = ClsDetallesFactura(None, varProducto, varCantidad, varDescripcion, varPrecioUnitario,
-                                           varImpuesto)
-    ClsDetallesFactura.listaObjetosDetalle.append(objDetalleFactura)
+    varObjProducto = ClsProductos(None, varProducto, varCantidad, varDescripcion, varPrecioUnitario)
+    ClsProductos.listaObjetosProductos.append(varObjProducto)
+
+    return redirect('/maestroDetalleTP2/gestionDetalle')
+
+
+def gestionDetalle(request):
+    varListaProductos = ClsProductos.listaObjetosProductos
+    return render(request, "agregarDetalle.html", {"productos": varListaProductos})
+
+
+def agregarDetalle(request):
+    varImpuesto = request.POST['txtImpuesto']
+    varListaProductos = ClsProductos.listaObjetosProductos
+
+    varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, varImpuesto)
+    ClsDetallesFactura.varObjetoDetalle = varObjDetalleDeFactura
 
     return redirect('/maestroDetalleTP2/')
 
 
-def editarPersona(request):
-    varId = request.POST['txtId']
-    varNombre = request.POST['txtNombre']
-    varApellido = request.POST['txtApellido']
-    varApodo = request.POST['txtApodo']
-    varSexo = request.POST['txtSexo']
-    varNacionalidad = request.POST['txtNacionalidad']
-    varFechaNac = request.POST['txtFechaNac']
-    varEsFeliz = request.POST.get('txtEsFeliz')
-    varEdad = request.POST['txtEdad']
-    varDni = request.POST['txtDni']
-    varAltura = request.POST['txtAltura']
+def edicionProducto(request, indice):
+    varIndice = ClsProductosDao.buscarIndiceProducto(indice)
+    varObjProducto = ClsDetallesFactura.listaDeProductos[varIndice]
+    return render(request, "editarPersona.html", {"producto": varObjProducto})
 
-    if not varEsFeliz:
-        varEsFeliz = False
 
-    varObjPersona = ClsPersonas(varId, varNombre, varApellido, varApodo, varSexo, varNacionalidad, varFechaNac,
-                                varEsFeliz, varEdad, varDni, varAltura)
+def editarProducto(request):
+    varProducto = request.POST['txtProducto']
+    varCantidad = request.POST['txtCantidad']
+    varDescripcion = request.POST['txtDescripcion']
+    varPrecioUnitario = request.POST['txtPrecioUnitario']
 
-    ClsPersonaDao.actualizarPersona(varObjPersona)
+    varObjProducto = ClsProductos(None, varProducto, varCantidad, varDescripcion, varPrecioUnitario)
 
-    messages.success(request, '¡Persona actualizada!')
+    varIndice = ClsProductos.varGlIndiceProductoParaEditar
+    ClsProductos.listaObjetosProductos[varIndice] = varObjProducto
 
-    return redirect('/trabajoPractico1/')
+    # messages.success(request, '¡Persona actualizada!')
+
+    return redirect('/maestroDetalleTP2/gestionDetalle/')
 
 
 def eliminarPersona(request, varId):

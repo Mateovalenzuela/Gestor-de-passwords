@@ -1,64 +1,34 @@
 class ClsDetallesFactura:
+    varObjetoDetalle = None
 
-    listaObjetosDetalle = []
-
-    def __init__(self, id=None, producto=None, cantidad=None, descripcion=None, precioUnitario=None, impuesto=None):
+    def __init__(self, id=None, listaProductos=None, impuesto=None):
+        if impuesto is not None:
+            float(impuesto)
         self._id = id
-        self._producto = producto
-        self._cantidad = float(cantidad)
-        self._descripcion = descripcion
-        self._precioUnitario = float(precioUnitario)
-        self._importe = (self._precioUnitario * self._cantidad)
-        self._impuesto = float(impuesto)
-        self._total = (self._importe * ((self._impuesto/100) + 1))
+        self._listaDeProductos = listaProductos
+        self._subtotal = None
+        self._impuesto = impuesto
+        self._total = None
 
     @property
     def id(self):
         return self._id
 
-    @id.setter
-    def id(self, id):
-        self._id = id
+    @property
+    def listaDeProductos(self):
+        return self._listaDeProductos
+
+    @listaDeProductos.setter
+    def listaDeProductos(self, listaDeProductos):
+        self._listaDeProductos = listaDeProductos
 
     @property
-    def producto(self):
-        return self._producto
+    def subtotal(self):
+        return self._subtotal
 
-    @producto.setter
-    def producto(self, producto):
-        self._producto = producto
-
-    @property
-    def cantidad(self):
-        return self._cantidad
-
-    @cantidad.setter
-    def cantidad(self, cantidad):
-        self._cantidad = cantidad
-
-    @property
-    def descripcion(self):
-        return self._descripcion
-
-    @descripcion.setter
-    def descripcion(self, descripcion):
-        self._descripcion = descripcion
-
-    @property
-    def precioUnitario(self):
-        return self._precioUnitario
-
-    @precioUnitario.setter
-    def precioUnitario(self, precioUnitario):
-        self._precioUnitario = precioUnitario
-
-    @property
-    def importe(self):
-        return self._importe
-
-    @importe.setter
-    def importe(self, importe):
-        self._importe = importe
+    @subtotal.setter
+    def subtotal(self, subtotal):
+        self._subtotal = subtotal
 
     @property
     def impuesto(self):
@@ -75,3 +45,15 @@ class ClsDetallesFactura:
     @total.setter
     def total(self, total):
         self._total = total
+
+    def calcularSubtotal(self):
+        importeTotal = 0
+        for i in self._listaDeProductos:
+            importeTotal += i.importe
+
+        self.subtotal(importeTotal)
+
+    def calcularTotal(self):
+        varImpuesto = (self.impuesto / 100) + 1
+        varTotalCalculado = self.subtotal * varImpuesto
+        self.total(varTotalCalculado)
