@@ -13,7 +13,7 @@
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 {% for i in listaCabecera%}
-                <a class="dropdown-item" href="#">{{i.titular}}</a>
+                <a class="dropdown-item" href="/maestroDetalleTP2/seleccionarCabecera/{{forloop.counter}}">{{i.titular}}</a>
                 {% endfor %}
             </div>
         </div>
@@ -32,22 +32,22 @@
     <dl class="row">
         <dt class="col-sm-3">Facturar a nombre de:</dt>
         <dd class="col-sm-9">
-            {titular}
+            {{cabecera.titular}}
         </dd>
 
         <dt class="col-sm-3">Dirección del titular:</dt>
         <dd class="col-sm-9">
-            {Direccion}
+            {{cabecera.direccion}}
         </dd>
 
         <dt class="col-sm-3">Fecha de facturación:</dt>
         <dd class="col-sm-9">
-            {Se auto completa en bd}
+            {{cabecera.fechaEmision}}
         </dd>
 
         <dt class="col-sm-3 text-truncate">Fecha de vencimiento:</dt>
         <dd class="col-sm-9">
-            {fecha de vencimiento}
+            {{cabecera.fechaVencimiento}}
         </dd>
     </dl>
 </div>

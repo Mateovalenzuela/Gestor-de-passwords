@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from datetime import date
 from negocio.factura import ClsFacturas
 from negocio.detalleFactura import ClsDetallesFactura
 from negocio.producto import ClsProductos
@@ -15,8 +16,13 @@ def home(request):
     if varObjDetalle is None:
         varObjDetalle = ClsDetallesFactura()
 
+    varObjCabecera = ClsFacturas.varObjCabeceraSeleccionado
+    if varObjCabecera is None:
+        varObjCabecera = ClsFacturas()
+
     return render(request, "gestionFacturas.html",
-                  {"productos": varObjDetalle.listaDeProductos, "listaCabecera": varListaObjCabecera})
+                  {"productos": varObjDetalle.listaDeProductos, "listaCabecera": varListaObjCabecera,
+                   "cabecera": varObjCabecera})
 
 
 def gestionCabecera(request):
@@ -97,3 +103,10 @@ def eliminarProducto(request, indice):
     varIndice = int(indice) - 1
     ClsProductos.listaObjetosProductos.pop(varIndice)
     return redirect('/maestroDetalleTP2/gestionDetalle')
+
+def seleccionarCabecera(request, indice):
+    varIndice = int(indice) - 1
+    varObjCabecera = ClsFacturas.listaObjetosCabecera[varIndice]
+    varObjCabecera.fechaEmision = date.today()
+    ClsFacturas.varObjCabeceraSeleccionado = varObjCabecera
+    return redirect('/maestroDetalleTP2/')
