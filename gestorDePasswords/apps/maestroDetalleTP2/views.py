@@ -53,8 +53,11 @@ def agregarProducto(request):
 
 
 def gestionDetalle(request):
+    if ClsDetallesFactura.varObjetoDetalle is None:
+        ClsDetallesFactura.varObjetoDetalle = ClsDetallesFactura(None, [], 0)
     varListaProductos = ClsProductos.listaObjetosProductos
-    return render(request, "agregarDetalle.html", {"productos": varListaProductos})
+    varImpuesto = ClsDetallesFactura.varObjetoDetalle.impuesto
+    return render(request, "agregarDetalle.html", {"productos": varListaProductos, "impuesto": varImpuesto})
 
 
 def agregarDetalle(request):
@@ -68,9 +71,11 @@ def agregarDetalle(request):
 
 
 def edicionProducto(request, indice):
-    varIndice = ClsProductosDao.buscarIndiceProducto(indice)
-    varObjProducto = ClsDetallesFactura.listaDeProductos[varIndice]
-    return render(request, "editarPersona.html", {"producto": varObjProducto})
+
+    varIndice = int(indice) - 1
+    varObjProducto = ClsProductos.listaObjetosProductos[varIndice]
+    ClsProductos.varGlIndiceProductoParaEditar = varIndice
+    return render(request, "editarProducto.html", {"producto": varObjProducto})
 
 
 def editarProducto(request):

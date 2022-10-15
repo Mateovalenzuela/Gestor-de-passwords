@@ -44,7 +44,7 @@ class ClsProductos:
 
     @property
     def precioUnitario(self):
-        return self._precioUnitario
+        return str(self._precioUnitario)
 
     @precioUnitario.setter
     def precioUnitario(self, precioUnitario):
@@ -52,7 +52,7 @@ class ClsProductos:
 
     @property
     def importe(self):
-        return self._importe
+        return str(self._importe)
 
     @importe.setter
     def importe(self, importe):

@@ -25,13 +25,13 @@
                     {% for i in productos%}
                     <tr>
                         <td> {{forloop.counter}}</td>
-                        <td> {{i.producto}} {{forloop.counter}}</td>
+                        <td> {{i.producto}}</td>
                         <td> {{i.cantidad}}</td>
                         <td> {{i.descripcion}}</td>
                         <td> {{i.precioUnitario}}</td>
                         <td> {{i.importe}}</td>
                         <td> <a href="/maestroDetalleTP2/edicionProducto/{{forloop.counter}}" class="btn btn-info">Editar</a></td>
-                        <td> <a href="/maestroDetalleTP2/eliminarProducto/{{i.producto}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
+                        <td> <a href="/maestroDetalleTP2/eliminarProducto/{{forloop.counter}}" class="btn btn-danger btnEliminacion">Eliminar</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -57,8 +57,8 @@
                         </div>
 
                         <div class="form-grup py-1">
-                            <input type="number" id="txtImpuesto" name="txtImpuesto" class="form-control"
-                                   placeholder="Ej: 21" step="0.01"  min="0" required>
+                            <input type="number" id="txtImpuesto" name="txtImpuesto" value="{{impuesto}}"
+                                   class="form-control" placeholder="Ej: 21" step="0.01"  min="0" required>
                         </div>
 
                         <div class="form-grup py-1">

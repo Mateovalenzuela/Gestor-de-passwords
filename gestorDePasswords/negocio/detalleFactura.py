@@ -32,7 +32,7 @@ class ClsDetallesFactura:
 
     @property
     def impuesto(self):
-        return self._impuesto
+        return str(self._impuesto)
 
     @impuesto.setter
     def impuesto(self, impuesto):
@@ -49,11 +49,11 @@ class ClsDetallesFactura:
     def calcularSubtotal(self):
         importeTotal = 0
         for i in self._listaDeProductos:
-            importeTotal += i.importe
+            importeTotal += float(i.importe)
 
         self.subtotal(importeTotal)
 
     def calcularTotal(self):
-        varImpuesto = (self.impuesto / 100) + 1
+        varImpuesto = (self._impuesto / 100) + 1
         varTotalCalculado = self.subtotal * varImpuesto
         self.total(varTotalCalculado)
