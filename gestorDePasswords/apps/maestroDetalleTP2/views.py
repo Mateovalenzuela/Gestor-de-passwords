@@ -94,9 +94,7 @@ def editarProducto(request):
     return redirect('/maestroDetalleTP2/gestionDetalle/')
 
 
-def eliminarPersona(request, varId):
-    varObjPersona = ClsPersonas(varId, None, None, None, None, None, None, None, None, None, None)
-    ClsPersonaDao.eliminarPersona(varObjPersona)
-
-    messages.success(request, '¡Persona eliminada!')
-    return redirect('/trabajoPractico1/')
+def eliminarProducto(request, indice):
+    varIndice = int(indice) - 1
+    ClsProductos.listaObjetosProductos.pop(varIndice)
+    return redirect('/maestroDetalleTP2/gestionDetalle')
