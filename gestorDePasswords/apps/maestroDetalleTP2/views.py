@@ -3,21 +3,20 @@ from django.contrib import messages
 from negocio.factura import ClsFacturas
 from negocio.detalleFactura import ClsDetallesFactura
 from negocio.producto import ClsProductos
-from negocio.productoDao import ClsProductosDao
 
 
 # Create your views here.
 
 def home(request):
     varObjDetalle = ClsDetallesFactura.varObjetoDetalle
-    varObjCabecera = ClsFacturas.listaObjetosCabecera
+    varListaObjCabecera = ClsFacturas.listaObjetosCabecera
     # messages.success(request, '¡Personas listadas!')
 
     if varObjDetalle is None:
         varObjDetalle = ClsDetallesFactura()
 
     return render(request, "gestionFacturas.html",
-                  {"productos": varObjDetalle.listaDeProductos, "cabecera": varObjCabecera})
+                  {"productos": varObjDetalle.listaDeProductos, "listaCabecera": varListaObjCabecera})
 
 
 def gestionCabecera(request):

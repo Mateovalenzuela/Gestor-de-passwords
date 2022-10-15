@@ -12,7 +12,7 @@
             </button>
 
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for i in cabecera%}
+                {% for i in listaCabecera%}
                 <a class="dropdown-item" href="#">{{i.titular}}</a>
                 {% endfor %}
             </div>
@@ -21,10 +21,36 @@
 
 
     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-        <a href="gestionCabecera/" class="btn btn-info">Agregar cabecera</a>
+        <a href="gestionCabecera/" class="btn btn-info">Agregar titular</a>
     </div>
+
+    <h1>Cabecera</h1>
+
 </div>
 
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Facturar a nombre de:</dt>
+        <dd class="col-sm-9">
+            {titular}
+        </dd>
+
+        <dt class="col-sm-3">Dirección del titular:</dt>
+        <dd class="col-sm-9">
+            {Direccion}
+        </dd>
+
+        <dt class="col-sm-3">Fecha de facturación:</dt>
+        <dd class="col-sm-9">
+            {Se auto completa en bd}
+        </dd>
+
+        <dt class="col-sm-3 text-truncate">Fecha de vencimiento:</dt>
+        <dd class="col-sm-9">
+            {fecha de vencimiento}
+        </dd>
+    </dl>
+</div>
 
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
