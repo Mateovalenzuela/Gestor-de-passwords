@@ -20,9 +20,12 @@ def home(request):
     if varObjCabecera is None:
         varObjCabecera = ClsFacturas()
 
+    varObjFactura = ClsFacturas(None, varObjCabecera.titular, varObjCabecera.direccion, varObjCabecera.fechaEmision,
+                                varObjCabecera.fechaVencimiento, varObjDetalle)
+
     return render(request, "gestionFacturas.html",
-                  {"productos": varObjDetalle.listaDeProductos, "listaCabecera": varListaObjCabecera,
-                   "cabecera": varObjCabecera})
+                  {"productos": varObjFactura.detalleFactura.listaDeProductos, "listaCabecera": varListaObjCabecera,
+                   "cabecera": varObjFactura, "subDetalle": varObjFactura.detalleFactura})
 
 
 def gestionCabecera(request):
@@ -70,13 +73,15 @@ def agregarDetalle(request):
     varListaProductos = ClsProductos.listaObjetosProductos
 
     varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, varImpuesto)
+    varObjDetalleDeFactura.calcularSubtotal()
+    varObjDetalleDeFactura.calcularTotal()
+
     ClsDetallesFactura.varObjetoDetalle = varObjDetalleDeFactura
 
     return redirect('/maestroDetalleTP2/')
 
 
 def edicionProducto(request, indice):
-
     varIndice = int(indice) - 1
     varObjProducto = ClsProductos.listaObjetosProductos[varIndice]
     ClsProductos.varGlIndiceProductoParaEditar = varIndice
@@ -103,6 +108,7 @@ def eliminarProducto(request, indice):
     varIndice = int(indice) - 1
     ClsProductos.listaObjetosProductos.pop(varIndice)
     return redirect('/maestroDetalleTP2/gestionDetalle')
+
 
 def seleccionarCabecera(request, indice):
     varIndice = int(indice) - 1

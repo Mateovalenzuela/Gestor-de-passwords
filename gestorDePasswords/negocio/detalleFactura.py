@@ -47,13 +47,16 @@ class ClsDetallesFactura:
         self._total = total
 
     def calcularSubtotal(self):
-        importeTotal = 0
+        varImporteTotal = 0
         for i in self._listaDeProductos:
-            importeTotal += float(i.importe)
+            varImporteTotal += float(i.importe)
 
-        self.subtotal(importeTotal)
+        varSubtotalRedondeado = round(varImporteTotal, 2)
+
+        self.subtotal = varSubtotalRedondeado
 
     def calcularTotal(self):
-        varImpuesto = (self._impuesto / 100) + 1
+        varImpuesto = (float(self._impuesto) / 100) + 1
         varTotalCalculado = self.subtotal * varImpuesto
-        self.total(varTotalCalculado)
+        varValorTotalRedondeado = round(varTotalCalculado, 2)
+        self.total = varValorTotalRedondeado
