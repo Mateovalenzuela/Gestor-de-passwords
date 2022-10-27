@@ -123,3 +123,5 @@ def guardarFacturaEnBd(request):
 
     ClsFacturasDao.insertarFactura(ClsFacturas.varObjCabeceraSeleccionado)
     ClsFacturas.varObjCabeceraSeleccionado = None
+
+    return redirect('/maestroDetalleTP2/')

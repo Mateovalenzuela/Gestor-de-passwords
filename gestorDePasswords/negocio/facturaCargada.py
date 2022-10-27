@@ -1,5 +1,5 @@
-from facturaDao import ClsFacturasDao
-from factura import ClsFacturas
+from negocio.facturaDao import ClsFacturasDao
+from negocio.factura import ClsFacturas
 
 
 class ClsFacturaCargada:
