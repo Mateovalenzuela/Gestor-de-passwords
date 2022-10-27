@@ -1,4 +1,4 @@
-from producto import ClsProductos
+from negocio.producto import ClsProductos
 from datos.conexion import ClsConexion
 
 

@@ -23,6 +23,7 @@ def home(request):
 
     varObjFactura = ClsFacturas(None, varObjCabecera.titular, varObjCabecera.direccion, varObjCabecera.fechaEmision,
                                 varObjCabecera.fechaVencimiento, varObjDetalle)
+    ClsFacturas.varObjFacturaFinal = varObjFactura
 
     return render(request, "gestionFacturas.html",
                   {"productos": varObjFactura.detalleFactura.listaDeProductos, "listaCabecera": varListaObjCabecera,
@@ -121,5 +122,7 @@ def seleccionarCabecera(request, indice):
 
 def guardarFacturaEnBd(request):
 
-    ClsFacturasDao.insertarFactura(ClsFacturas.varObjCabeceraSeleccionado)
-    ClsFacturas.varObjCabeceraSeleccionado = None
+    ClsFacturasDao.insertarFactura(ClsFacturas.varObjFacturaFinal)
+    ClsFacturas.varObjFacturaFinal = None
+
+    return redirect('/maestroDetalleTP2/')

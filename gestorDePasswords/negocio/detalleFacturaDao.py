@@ -1,7 +1,7 @@
 from datos.conexion import ClsConexion
-from detalleFactura import ClsDetallesFactura
-from producto import ClsProductos
-from productoDao import ClsProductosDao
+from negocio.detalleFactura import ClsDetallesFactura
+from negocio.producto import ClsProductos
+from negocio.productoDao import ClsProductosDao
 
 
 class ClsDetallesFacturaDao:

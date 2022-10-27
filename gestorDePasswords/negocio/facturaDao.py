@@ -1,9 +1,9 @@
 from datos.conexion import ClsConexion
-from detalleFactura import ClsDetallesFactura
-from factura import ClsFacturas
-from detalleFacturaDao import ClsDetallesFacturaDao
-from producto import ClsProductos
-from facturaCargada import ClsFacturaCargada
+from negocio.detalleFactura import ClsDetallesFactura
+from negocio.factura import ClsFacturas
+from negocio.detalleFacturaDao import ClsDetallesFacturaDao
+from negocio.producto import ClsProductos
+
 
 
 class ClsFacturasDao:
@@ -19,6 +19,7 @@ class ClsFacturasDao:
         varDireccion = objFactura.direccion
         varFechaVencimiento = objFactura.fechaVencimiento
         varObjDetalleFactura = objFactura.detalleFactura
+
 
         varIdDetalleFactura = ClsDetallesFacturaDao.insertarDetalleFactura(varObjDetalleFactura)
 
@@ -53,7 +54,8 @@ class ClsFacturasDao:
 
         varListaDeFacturas = []
         for id in varIdFacturas:
-            varObjFacturaCargada = ClsFacturaCargada(id[0])
+            varIdFactura = ClsFacturas(id[0])
+            varObjFacturaCargada = cls.obtenerFacturaPorId(varIdFactura)
             varListaDeFacturas.append(varObjFacturaCargada)
 
         return varListaDeFacturas

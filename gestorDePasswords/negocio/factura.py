@@ -2,6 +2,7 @@ class ClsFacturas:
 
     listaObjetosCabecera = []
     varObjCabeceraSeleccionado = None
+    varObjFacturaFinal = None
 
     def __init__(self, id=None, tituar=None, direccion=None, fechaEmision=None, fechaVencimiento=None,
                  detalleFactura=None):
