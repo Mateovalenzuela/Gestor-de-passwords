@@ -4,6 +4,7 @@ from datetime import date
 from negocio.factura import ClsFacturas
 from negocio.detalleFactura import ClsDetallesFactura
 from negocio.producto import ClsProductos
+from negocio.facturaDao import ClsFacturasDao
 
 
 # Create your views here.
@@ -62,7 +63,7 @@ def agregarProducto(request):
 
 def gestionDetalle(request):
     if ClsDetallesFactura.varObjetoDetalle is None:
-        ClsDetallesFactura.varObjetoDetalle = ClsDetallesFactura(None, [], 0)
+        ClsDetallesFactura.varObjetoDetalle = ClsDetallesFactura(None, [], None, 0)
     varListaProductos = ClsProductos.listaObjetosProductos
     varImpuesto = ClsDetallesFactura.varObjetoDetalle.impuesto
     return render(request, "agregarDetalle.html", {"productos": varListaProductos, "impuesto": varImpuesto})
@@ -72,7 +73,7 @@ def agregarDetalle(request):
     varImpuesto = request.POST['txtImpuesto']
     varListaProductos = ClsProductos.listaObjetosProductos
 
-    varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, varImpuesto)
+    varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, None, varImpuesto)
     varObjDetalleDeFactura.calcularSubtotal()
     varObjDetalleDeFactura.calcularTotal()
 
@@ -116,3 +117,9 @@ def seleccionarCabecera(request, indice):
     varObjCabecera.fechaEmision = date.today()
     ClsFacturas.varObjCabeceraSeleccionado = varObjCabecera
     return redirect('/maestroDetalleTP2/')
+
+
+def guardarFacturaEnBd(request):
+
+    ClsFacturasDao.insertarFactura(ClsFacturas.varObjCabeceraSeleccionado)
+    ClsFacturas.varObjCabeceraSeleccionado = None

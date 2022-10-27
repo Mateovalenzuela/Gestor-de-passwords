@@ -1,11 +1,12 @@
 class ClsDetallesFactura:
     varObjetoDetalle = None
 
-    def __init__(self, id=None, listaProductos=None, impuesto=None):
+    def __init__(self, id=None, listaProductos=None, listaDeIds=None, impuesto=None):
         if impuesto is not None:
             float(impuesto)
         self._id = id
         self._listaDeProductos = listaProductos
+        self._listaDeIds = listaDeIds
         self._subtotal = None
         self._impuesto = impuesto
         self._total = None
@@ -14,6 +15,10 @@ class ClsDetallesFactura:
     def id(self):
         return self._id
 
+    @id.setter
+    def id(self, id):
+        self._id = id
+
     @property
     def listaDeProductos(self):
         return self._listaDeProductos
@@ -21,6 +26,14 @@ class ClsDetallesFactura:
     @listaDeProductos.setter
     def listaDeProductos(self, listaDeProductos):
         self._listaDeProductos = listaDeProductos
+
+    @property
+    def listaDeIds(self):
+        return self._listaDeIds
+
+    @listaDeIds.setter
+    def listaDeIds(self, listaDeIds):
+        self._listaDeIds = listaDeIds
 
     @property
     def subtotal(self):

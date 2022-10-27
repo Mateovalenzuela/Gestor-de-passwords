@@ -7,6 +7,8 @@ class ClsConexion:
     _conexion = None
     _cursor = None
 
+    listaDeTransaccionSql = []
+
     @classmethod
     def obtenerConexion(cls):
         if cls._conexion is None:
@@ -37,6 +39,22 @@ class ClsConexion:
             varCursor = conexion.cursor()
             varCursor.execute(sql)
             return varCursor
+
+    @classmethod
+    def ejecutarTransaccionSql(cls, listaDeSentenciasSql):
+        try:
+            with ClsConexion.obtenerConexion() as conexion:
+                varCursor = conexion.cursor()
+                for sentencia in listaDeSentenciasSql:
+                    varCursor.execute(sentencia)
+
+        except Exception as e:
+            print(f'Ocurrio un error: {e}')
+        finally:
+            conexion.close()
+            print('Termino la transaccion...')
+
+
 
 
 if __name__ == '__main__':
