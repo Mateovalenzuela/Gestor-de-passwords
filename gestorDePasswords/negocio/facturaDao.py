@@ -20,6 +20,7 @@ class ClsFacturasDao:
         varFechaVencimiento = objFactura.fechaVencimiento
         varObjDetalleFactura = objFactura.detalleFactura
 
+
         varIdDetalleFactura = ClsDetallesFacturaDao.insertarDetalleFactura(varObjDetalleFactura)
 
         INSERT = cls.INSERTAR + f'(\'{varTitular}\', \'{varDireccion}\', \'{varFechaVencimiento}\', {varIdDetalleFactura})'

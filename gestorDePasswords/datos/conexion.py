@@ -51,7 +51,6 @@ class ClsConexion:
         except Exception as e:
             print(f'Ocurrio un error: {e}')
         finally:
-            conexion.close()
             print('Termino la transaccion...')
 
 

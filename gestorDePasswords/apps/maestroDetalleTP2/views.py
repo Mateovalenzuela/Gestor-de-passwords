@@ -23,6 +23,7 @@ def home(request):
 
     varObjFactura = ClsFacturas(None, varObjCabecera.titular, varObjCabecera.direccion, varObjCabecera.fechaEmision,
                                 varObjCabecera.fechaVencimiento, varObjDetalle)
+    ClsFacturas.varObjFacturaFinal = varObjFactura
 
     return render(request, "gestionFacturas.html",
                   {"productos": varObjFactura.detalleFactura.listaDeProductos, "listaCabecera": varListaObjCabecera,
@@ -120,8 +121,80 @@ def seleccionarCabecera(request, indice):
 
 
 def guardarFacturaEnBd(request):
-
-    ClsFacturasDao.insertarFactura(ClsFacturas.varObjCabeceraSeleccionado)
-    ClsFacturas.varObjCabeceraSeleccionado = None
+    ClsFacturasDao.insertarFactura(ClsFacturas.varObjFacturaFinal)
+    ClsFacturas.varObjFacturaFinal = None
 
     return redirect('/maestroDetalleTP2/')
+
+
+def verTodasLasFacturas(request):
+    ClsFacturas.listaDeTodasLasFacturas = ClsFacturasDao.obtenerTodasLasFacturas()
+    listaDeTodasLasFacturas = ClsFacturas.listaDeTodasLasFacturas
+
+    if ClsFacturas.varObjFacturaSeleccionada is None:
+        varDetalleFactura = ClsDetallesFactura(None, [], None, None)
+        varFacturaSeleccionada = ClsFacturas.varObjFacturaSeleccionada = ClsFacturas(detalleFactura=varDetalleFactura)
+
+    else:
+        varFacturaSeleccionada = ClsFacturas.varObjFacturaSeleccionada
+
+    return render(request, "verTodasLasFacturas.html",
+                  {"listaDeFacturas": listaDeTodasLasFacturas, "cabeceraFactura": varFacturaSeleccionada,
+                   "detalleFactura": varFacturaSeleccionada.detalleFactura, "productosFactura":
+                       varFacturaSeleccionada.detalleFactura.listaDeProductos})
+
+
+def seleccionarFactura(request, indice):
+    varIndice = int(indice) - 1
+    varObjFactura = ClsFacturas.listaDeTodasLasFacturas[varIndice]
+    varObjFactura.fechaEmision = date.today()
+
+    ClsFacturas.varObjFacturaSeleccionada = varObjFactura
+    return redirect('/maestroDetalleTP2/verTodasLasFacturas/')
+
+
+def modificacionDeFactura(request):
+    varListaDeProductos = ClsFacturas.varObjFacturaSeleccionada.detalleFactura.listaDeProductos
+    ClsProductos.listaObjetosProductos = varListaDeProductos
+    if ClsDetallesFactura.varObjetoDetalle is None:
+        ClsDetallesFactura.varObjetoDetalle = ClsDetallesFactura(impuesto=0)
+
+    ClsDetallesFactura.varObjetoDetalle.listaDeProductos = varListaDeProductos
+    ClsDetallesFactura.varObjetoDetalle.impuesto = ClsFacturas.varObjFacturaSeleccionada.detalleFactura.impuesto
+    ClsDetallesFactura.varObjetoDetalle.calcularSubtotal()
+    ClsDetallesFactura.varObjetoDetalle.calcularTotal()
+
+    varListaProductos = ClsProductos.listaObjetosProductos
+    varImpuesto = ClsDetallesFactura.varObjetoDetalle.impuesto
+    return render(request, "modificarFactura.html", {"productos": varListaProductos, "impuesto": varImpuesto})
+
+
+def modificarFactura(request):
+    varImpuesto = request.POST['txtImpuesto']
+    varListaProductos = ClsProductos.listaObjetosProductos
+
+    ClsFacturas.varObjFacturaSeleccionada.detalleFactura.impuesto = varImpuesto
+    ClsFacturas.varObjFacturaSeleccionada.detalleFactura.listaDeProductos = varListaProductos
+
+    return redirect('/maestroDetalleTP2/')
+
+def modificacionProducto(request, indice):
+    varIndice = int(indice) - 1
+    varObjProducto = ClsProductos.listaObjetosProductos[varIndice]
+    ClsProductos.varGlIndiceProductoParaEditar = varIndice
+    return render(request, "modificarProducto.html", {"producto": varObjProducto})
+
+def modificarProducto(request):
+    varProducto = request.POST['txtProducto']
+    varCantidad = request.POST['txtCantidad']
+    varDescripcion = request.POST['txtDescripcion']
+    varPrecioUnitario = request.POST['txtPrecioUnitario']
+
+    varObjProducto = ClsProductos(None, varProducto, varCantidad, varDescripcion, varPrecioUnitario)
+
+    varIndice = ClsProductos.varGlIndiceProductoParaEditar
+    ClsProductos.listaObjetosProductos[varIndice] = varObjProducto
+
+    # messages.success(request, '¡Persona actualizada!')
+
+    return redirect('/maestroDetalleTP2/modificacionFactura/')
