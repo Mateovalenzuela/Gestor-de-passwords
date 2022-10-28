@@ -126,3 +126,19 @@ def guardarFacturaEnBd(request):
     ClsFacturas.varObjFacturaFinal = None
 
     return redirect('/maestroDetalleTP2/')
+
+def verTodasLasFacturas(request):
+
+    ClsFacturas.listaDeTodasLasFacturas = ClsFacturasDao.obtenerTodasLasFacturas()
+    listaDeTodasLasFacturas = ClsFacturas.listaDeTodasLasFacturas
+
+    return render(request, "verTodasLasFaturas.html",
+                  {"listaDeFacturas": listaDeTodasLasFacturas})
+
+def seleccionarFactura(request, indice):
+        varIndice = int(indice) - 1
+        varObjCabecera = ClsFacturas.listaObjetosCabecera[varIndice]
+        varObjCabecera.fechaEmision = date.today()
+        ClsFacturas.varObjCabeceraSeleccionado = varObjCabecera
+        return redirect('/maestroDetalleTP2/')
+

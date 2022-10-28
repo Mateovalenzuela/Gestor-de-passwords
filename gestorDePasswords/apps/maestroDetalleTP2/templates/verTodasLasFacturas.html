@@ -1,0 +1,99 @@
+{% extends "./plantilla.html" %}
+
+{% block title %} Todas las facturas {% endblock %}
+
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Titulares
+            </button>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                {% for i in listaDeFacturas%}
+                <a class="dropdown-item" href="/maestroDetalleTP2/seleccionarCabecera/{{forloop.counter}}">{{i.titular}}</a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <h1>Cabecera</h1>
+
+</div>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Facturar a nombre de:</dt>
+        <dd class="col-sm-9">
+            {{i.titular}}
+        </dd>
+
+        <dt class="col-sm-3">Dirección del titular:</dt>
+        <dd class="col-sm-9">
+            {{i.direccion}}
+        </dd>
+
+        <dt class="col-sm-3">Fecha de facturación:</dt>
+        <dd class="col-sm-9">
+            {{i.fechaEmision}}
+        </dd>
+
+        <dt class="col-sm-3 text-truncate">Fecha de vencimiento:</dt>
+        <dd class="col-sm-9">
+            {{i.fechaVencimiento}}
+        </dd>
+    </dl>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h1>Detalles</h1>
+        <div class="table-responsive py-2">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Descripción</th>
+                        <th>Precio por unidad</th>
+                        <th>Importe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in productos%}
+                    <tr>
+                        <td> {{forloop.counter}}</td>
+                        <td> {{i.producto}}</td>
+                        <td> {{i.cantidad}}</td>
+                        <td> {{i.descripcion}}</td>
+                        <td> {{i.precioUnitario}}</td>
+                        <td> {{i.importe}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-10 offset-md-10">
+        <h5>Subtotal: {{subDetalle.subtotal}}</h5>
+        <h5>Impuestos: {{subDetalle.impuesto}}%</h5>
+    </div>
+
+    <div class="col-md-10 offset-md-10">
+        <h2>Total: {{subDetalle.total}}</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <a href="gestionDetalle/" class="btn btn-info">Modificar Detalle</a>
+    </div>
+</div>
+
+{% endblock %}

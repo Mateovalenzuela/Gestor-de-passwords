@@ -4,6 +4,8 @@ class ClsFacturas:
     varObjCabeceraSeleccionado = None
     varObjFacturaFinal = None
 
+    listaDeTodasLasFacturas = []
+
     def __init__(self, id=None, tituar=None, direccion=None, fechaEmision=None, fechaVencimiento=None,
                  detalleFactura=None):
         self._id = id
