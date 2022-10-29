@@ -19,5 +19,8 @@ urlpatterns = [
     path('modificacionFactura/', views.modificacionDeFactura),
     path('modificarFactura/', views.modificarFactura),
     path('modificarProducto/', views.modificarProducto),
-    path('modificacionProducto/<indice>', views.modificacionProducto)
+    path('modificacionProducto/<indice>', views.modificacionProducto),
+    path('modificacionCabecera/', views.modificacionCabecera),
+    path('modificarCabecera/', views.modificarCabecera),
+    path('actualizarFactura/', views.actualizarFacturaEbBd),
 ]

@@ -5,6 +5,7 @@ from negocio.factura import ClsFacturas
 from negocio.detalleFactura import ClsDetallesFactura
 from negocio.producto import ClsProductos
 from negocio.facturaDao import ClsFacturasDao
+from negocio.facturaCargada import ClsFacturaCargada
 
 
 # Create your views here.
@@ -147,8 +148,7 @@ def verTodasLasFacturas(request):
 def seleccionarFactura(request, indice):
     varIndice = int(indice) - 1
     varObjFactura = ClsFacturas.listaDeTodasLasFacturas[varIndice]
-    varObjFactura.fechaEmision = date.today()
-
+    varObjFactura = ClsFacturaCargada(varObjFactura.id)
     ClsFacturas.varObjFacturaSeleccionada = varObjFactura
     return redirect('/maestroDetalleTP2/verTodasLasFacturas/')
 
@@ -166,7 +166,9 @@ def modificacionDeFactura(request):
 
     varListaProductos = ClsProductos.listaObjetosProductos
     varImpuesto = ClsDetallesFactura.varObjetoDetalle.impuesto
-    return render(request, "modificarFactura.html", {"productos": varListaProductos, "impuesto": varImpuesto})
+    varCabecera = ClsFacturas.varObjFacturaSeleccionada
+    return render(request, "modificarFactura.html", {"productos": varListaProductos, "impuesto": varImpuesto,
+                                                     "cabecera": varCabecera})
 
 
 def modificarFactura(request):
@@ -178,11 +180,13 @@ def modificarFactura(request):
 
     return redirect('/maestroDetalleTP2/')
 
+
 def modificacionProducto(request, indice):
     varIndice = int(indice) - 1
     varObjProducto = ClsProductos.listaObjetosProductos[varIndice]
     ClsProductos.varGlIndiceProductoParaEditar = varIndice
     return render(request, "modificarProducto.html", {"producto": varObjProducto})
+
 
 def modificarProducto(request):
     varProducto = request.POST['txtProducto']
@@ -198,3 +202,34 @@ def modificarProducto(request):
     # messages.success(request, '¡Persona actualizada!')
 
     return redirect('/maestroDetalleTP2/modificacionFactura/')
+
+
+def modificacionCabecera(request):
+    return render(request, "modificarCabecera.html")
+
+
+def modificarCabecera(request):
+    varTitular = request.POST['txtTitular']
+    varDireccion = request.POST['txtDireccion']
+    varFechaVencimiento = request.POST['txtFechaVencimiento']
+
+    ClsFacturas.varObjFacturaSeleccionada.titular = varTitular
+    ClsFacturas.varObjFacturaSeleccionada.direccion = varDireccion
+    ClsFacturas.varObjFacturaSeleccionada.fechaVencimiento = varFechaVencimiento
+
+    return redirect('/maestroDetalleTP2/modificacionFactura/')
+
+
+def actualizarFacturaEbBd(request):
+    varImpuesto = request.POST['txtImpuesto']
+    varListaProductos = ClsProductos.listaObjetosProductos
+
+    varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, None, varImpuesto)
+    varObjDetalleDeFactura.calcularSubtotal()
+    varObjDetalleDeFactura.calcularTotal()
+
+    ClsFacturas.varObjFacturaSeleccionada.detalleFactura = varObjDetalleDeFactura
+    ClsFacturasDao.actualizarFactura(ClsFacturas.varObjFacturaSeleccionada)
+    ClsFacturas.varObjFacturaSeleccionada = None
+
+    return redirect('/maestroDetalleTP2/verTodasLasFacturas/')

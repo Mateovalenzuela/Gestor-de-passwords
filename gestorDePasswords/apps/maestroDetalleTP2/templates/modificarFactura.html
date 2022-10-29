@@ -4,6 +4,41 @@
 
 
 {% block body %}
+
+<div class="row">
+
+    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <a href="/maestroDetalleTP2/modificacionCabecera/" class="btn btn-info">Modificar titular</a>
+    </div>
+
+    <h1>Cabecera</h1>
+
+</div>
+
+<div>
+    <dl class="row">
+        <dt class="col-sm-3">Facturar a nombre de:</dt>
+        <dd class="col-sm-9">
+            {{cabecera.titular}}
+        </dd>
+
+        <dt class="col-sm-3">Dirección del titular:</dt>
+        <dd class="col-sm-9">
+            {{cabecera.direccion}}
+        </dd>
+
+        <dt class="col-sm-3">Fecha de facturación:</dt>
+        <dd class="col-sm-9">
+            {{cabecera.fechaEmision}}
+        </dd>
+
+        <dt class="col-sm-3 text-truncate">Fecha de vencimiento:</dt>
+        <dd class="col-sm-9">
+            {{cabecera.fechaVencimiento}}
+        </dd>
+    </dl>
+</div>
+
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
 
@@ -45,7 +80,7 @@
         <h2>Modificar impuesto</h2>
             <div class="card">
                 <div class="card-body">
-                    <form action="/maestroDetalleTP2/agregarDetalle/" method="POST"> {% csrf_token %}
+                    <form action="/maestroDetalleTP2/actualizarFactura/" method="POST"> {% csrf_token %}
 
                         <div class="form-grup py-1">
                             <label>Porcentaje de impuesto</label>
