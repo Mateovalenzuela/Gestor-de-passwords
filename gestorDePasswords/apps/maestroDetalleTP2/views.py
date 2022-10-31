@@ -67,13 +67,14 @@ def gestionDetalle(request):
     if ClsDetallesFactura.varObjetoDetalle is None:
         ClsDetallesFactura.varObjetoDetalle = ClsDetallesFactura(None, [], None, 0)
     varListaProductos = ClsProductos.listaObjetosProductos
+    ClsDetallesFactura.varObjetoDetalle.listaDeProductos = varListaProductos
     varImpuesto = ClsDetallesFactura.varObjetoDetalle.impuesto
     return render(request, "agregarDetalle.html", {"productos": varListaProductos, "impuesto": varImpuesto})
 
 
 def agregarDetalle(request):
     varImpuesto = request.POST['txtImpuesto']
-    varListaProductos = ClsProductos.listaObjetosProductos
+    varListaProductos = ClsDetallesFactura.varObjetoDetalle.listaDeProductos
 
     varObjDetalleDeFactura = ClsDetallesFactura(None, varListaProductos, None, varImpuesto)
     varObjDetalleDeFactura.calcularSubtotal()
@@ -124,6 +125,11 @@ def seleccionarCabecera(request, indice):
 def guardarFacturaEnBd(request):
     ClsFacturasDao.insertarFactura(ClsFacturas.varObjFacturaFinal)
     ClsFacturas.varObjFacturaFinal = None
+    ClsFacturas.listaObjetosCabecera = []
+    ClsFacturas.varObjFacturaSeleccionada = None
+    ClsDetallesFactura.varObjetoDetalle = None
+    ClsProductos.listaObjetosProductos = []
+    ClsFacturas.varObjCabeceraSeleccionado = None
 
     return redirect('/maestroDetalleTP2/')
 
@@ -230,6 +236,11 @@ def actualizarFacturaEbBd(request):
 
     ClsFacturas.varObjFacturaSeleccionada.detalleFactura = varObjDetalleDeFactura
     ClsFacturasDao.actualizarFactura(ClsFacturas.varObjFacturaSeleccionada)
+    ClsFacturas.varObjFacturaFinal = None
+    ClsFacturas.listaObjetosCabecera = []
     ClsFacturas.varObjFacturaSeleccionada = None
+    ClsDetallesFactura.varObjetoDetalle = None
+    ClsProductos.listaObjetosProductos = []
+    ClsFacturas.varObjCabeceraSeleccionado = None
 
     return redirect('/maestroDetalleTP2/verTodasLasFacturas/')

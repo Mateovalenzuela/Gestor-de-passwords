@@ -3,7 +3,7 @@ import sys
 
 
 class ClsConexion:
-    varRutaBd = '../dataBases/dbTest.s3db'
+    varRutaBd = '../dataBases/dbPrincipal.db'
     _conexion = None
     _cursor = None
 
