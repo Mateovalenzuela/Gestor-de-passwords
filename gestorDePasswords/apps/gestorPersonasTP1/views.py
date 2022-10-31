@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from negocio.personaDao import *
 from negocio.persona import *
+from negocio.personaCargada import ClsPersonaCargada
 
 
 # Create your views here.
@@ -38,10 +39,9 @@ def registrarPersona(request):
 
 
 def edicionPersona(request, varId):
-    varObjPersona = ClsPersonas(varId)
-    varPersona = ClsPersonaDao.obtenerPorId(varObjPersona)
+    varObjPersonaCargada = ClsPersonaCargada(varId)
 
-    return render(request, "edicionPersona.html", {"persona": varPersona})
+    return render(request, "edicionPersona.html", {"persona": varObjPersonaCargada})
 
 
 def editarPersona(request):
