@@ -1,0 +1,71 @@
+CREATE TABLE "Detalles_Factura" (
+	"id"	INTEGER NOT NULL UNIQUE,
+	"lista_de_id"	TEXT,
+	"impuesto"	FLOAT,
+	"total"	FLOAT,
+	"subtotal"	FLOAT
+);
+
+
+
+
+CREATE TABLE "Facturas" (
+	"id"	INTEGER NOT NULL,
+	"titular"	VARCHAR,
+	"direccion"	VARCHAR,
+	"fecha_emision"	DATE DEFAULT CURRENT_DATE,
+	"fecha_vencimiento"	DATE,
+	"id_detalle_factura"	INTEGER NOT NULL,
+	FOREIGN KEY("id_detalle_factura") REFERENCES "Detalles_Factura"("id"),
+	PRIMARY KEY("id")
+);
+
+CREATE TABLE "Productos" (
+	"id"	INTEGER NOT NULL,
+	"producto"	VARCHAR,
+	"cantidad"	INTEGER,
+	"descripcion"	VARCHAR,
+	"precio_unitario"	FLOAT,
+	"importe"	FLOAT,
+	PRIMARY KEY("id")
+);
+
+
+
+
+
+CREATE TABLE [Passwords] (
+[id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+[nombre] VARCHAR(50)  NULL,
+[password] VARCHAR(50)  NULL,
+[descripcion] VARCHAR(500)  NULL
+);
+
+
+
+
+CREATE TABLE [Personas] (
+[id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT,
+[nombre] VARCHAR(50)  NULL,
+[apellido] VARCHAR(50)  NULL,
+[apodo] VARCHAR(50)  NULL,
+[sexo] VARCHAR(50)  NULL,
+[nacionalidad] VARCHAR(50)  NULL,
+[nacimiento] DATE  NULL,
+[feliz] BOOLEAN  NULL,
+[edad] INTEGER  NULL,
+[dni] INTEGER  NULL,
+[altura] FLOAT  NULL
+);
+
+
+
+
+
+
+
+
+
+
+
+

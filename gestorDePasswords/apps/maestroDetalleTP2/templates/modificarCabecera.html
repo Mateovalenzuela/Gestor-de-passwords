@@ -1,0 +1,51 @@
+{% extends "./plantilla.html" %}
+
+{% block title %} Modificar cabecera {% endblock %}
+
+
+{% block body %}
+<div class="row">
+  <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
+        <h2>Agregar titular</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/maestroDetalleTP2/modificarCabecera/" method="POST"> {% csrf_token %}
+
+                    <div class="form-grup py-1">
+                        <label>Nombre y apellido del titular</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtTitular" name="txtTitular" class="form-control"
+                               placeholder="Nombre y apellido" maxlength="150" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <label>Dirección del titular</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtDireccion" name="txtDireccion" class="form-control"
+                               placeholder="Dirección (calle y número)" maxlength="150" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <label>Fecha de vencimiento</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="date" id="txtFechaVencimiento" name="txtFechaVencimiento" class="form-control"
+                               placeholder="Fecha de Vencimiento" required>
+                    </div>
+
+
+                    <div class="form-grup py-1">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

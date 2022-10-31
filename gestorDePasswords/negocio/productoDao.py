@@ -21,7 +21,7 @@ class ClsProductosDao:
             INSERT = cls.INSERTAR + f'''(\'{varProducto}\', {varCantidad}, \'{varDescripcion}\', {varPrecioUnitario},
              {varimporte})'''
 
-            ClsConexion.listaDeTransaccionSql.append(INSERT)
+            ClsConexion.ejecutarSql(INSERT)
             varContadorDeProductosInsertados += 1
 
         SELECCIONAR_POR_ID = f'SELECT id FROM Productos ORDER BY id DESC LIMIT {varContadorDeProductosInsertados}'

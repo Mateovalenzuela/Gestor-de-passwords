@@ -14,4 +14,13 @@ urlpatterns = [
     path('eliminarProducto/<indice>', views.eliminarProducto),
     path('seleccionarCabecera/<indice>', views.seleccionarCabecera),
     path('guardarFactura/', views.guardarFacturaEnBd),
+    path('verTodasLasFacturas/', views.verTodasLasFacturas),
+    path('seleccionarFactura/<indice>', views.seleccionarFactura),
+    path('modificacionFactura/', views.modificacionDeFactura),
+    path('modificarFactura/', views.modificarFactura),
+    path('modificarProducto/', views.modificarProducto),
+    path('modificacionProducto/<indice>', views.modificacionProducto),
+    path('modificacionCabecera/', views.modificacionCabecera),
+    path('modificarCabecera/', views.modificarCabecera),
+    path('actualizarFactura/', views.actualizarFacturaEbBd),
 ]

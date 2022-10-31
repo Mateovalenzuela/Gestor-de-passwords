@@ -1,27 +1,14 @@
 {% extends "./plantilla.html" %}
 
-{% block title %} Maestro Detalle {% endblock %}
+{% block title %} Modificar Detalle {% endblock %}
 
 
 {% block body %}
+
 <div class="row">
-    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Titulares
-            </button>
-
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                {% for i in listaCabecera%}
-                <a class="dropdown-item" href="/maestroDetalleTP2/seleccionarCabecera/{{forloop.counter}}">{{i.titular}}</a>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
-
 
     <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-        <a href="gestionCabecera/" class="btn btn-info">Agregar titular</a>
+        <a href="/maestroDetalleTP2/modificacionCabecera/" class="btn btn-info">Modificar titular</a>
     </div>
 
     <h1>Cabecera</h1>
@@ -54,6 +41,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+
         <h1>Detalles</h1>
         <div class="table-responsive py-2">
             <table class="table table-striped">
@@ -65,6 +53,7 @@
                         <th>Descripción</th>
                         <th>Precio por unidad</th>
                         <th>Importe</th>
+                        <th colspan="2">Opciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -76,31 +65,38 @@
                         <td> {{i.descripcion}}</td>
                         <td> {{i.precioUnitario}}</td>
                         <td> {{i.importe}}</td>
+                        <td> <a href="/maestroDetalleTP2/modificacionProducto/{{forloop.counter}}" class="btn btn-info">Editar</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-    </div>
+
+  </div>
 </div>
 
 <div class="row">
-    <div class="col-md-10 offset-md-10">
-        <h5>Subtotal: {{subDetalle.subtotal}}</h5>
-        <h5>Impuestos: {{subDetalle.impuesto}}%</h5>
-    </div>
+    <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <h2>Modificar impuesto</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form action="/maestroDetalleTP2/actualizarFactura/" method="POST"> {% csrf_token %}
 
-    <div class="col-md-10 offset-md-10">
-        <h2>Total: {{subDetalle.total}}</h2>
+                        <div class="form-grup py-1">
+                            <label>Porcentaje de impuesto</label>
+                        </div>
+
+                        <div class="form-grup py-1">
+                            <input type="number" id="txtImpuesto" name="txtImpuesto" value="{{impuesto}}"
+                                   class="form-control" placeholder="Ej: 21" step="0.01"  min="0" required>
+                        </div>
+
+                        <div class="form-grup py-1">
+                            <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
     </div>
 </div>
-
-<div class="row">
-    <div class="col-sm-6 col-md-6 col-lg-6 col-xl-6">
-        <a href="gestionDetalle/" class="btn btn-info">Agregar o Editar detalles</a>
-        <a href="guardarFactura/" class="btn btn-success">Guardar factura</a>
-        <a href="verTodasLasFacturas/" class="btn btn-secondary">Ver Facuturas guardadas</a>
-    </div>
-</div>
-
 {% endblock %}

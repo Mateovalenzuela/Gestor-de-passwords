@@ -1,0 +1,59 @@
+{% extends "./plantilla.html" %}
+
+{% block title %}Modificar producto{% endblock %}
+
+
+{% block body %}
+<div class="row">
+  <div class="col-md-4 offset-md-4">
+    <h2>Edición de producto</h2>
+        <div class="card">
+            <div class="card-body">
+                <form action="/maestroDetalleTP2/modificarProducto/" method="POST"> {% csrf_token %}
+
+                    <div class="form-grup py-1">
+                        <label>Nombre de producto</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtProducto" name="txtProducto" value="{{producto.producto}}" class="form-control"
+                               placeholder="Producto" maxlength="150" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <label>Cantidad</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="number" id="txtCantitad" name="txtCantidad" value="{{producto.cantidad}}" class="form-control"
+                               placeholder="Ej: 2" min="0" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <label>Descripción del producto</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="text" id="txtDescripcion" name="txtDescripcion" value="{{producto.descripcion}}" class="form-control"
+                               placeholder="Ej: Producto ultra fragil" maxlength="500" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <label>Precio por unidad</label>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <input type="number" id="txtPrecioUnitario" name="txtPrecioUnitario" value="{{producto.precioUnitario}}" class="form-control"
+                               placeholder="Ej: 10.5" step="0.01" min="0" required>
+                    </div>
+
+                    <div class="form-grup py-1">
+                        <button type="submit" class="btn btn-success btn-block text-white">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+  </div>
+</div>
+
+{% endblock %}
