@@ -3,15 +3,17 @@ import sys
 
 
 class ClsConexion:
-    varRutaBd = '../dataBases/dbPrincipal.s3db'
+    varRutaBd = '../dataBases/dbPrincipal.db'
     _conexion = None
     _cursor = None
+
+    listaDeTransaccionSql = []
 
     @classmethod
     def obtenerConexion(cls):
         if cls._conexion is None:
             try:
-                cls._conexion = sqlite3.connect(cls.varRutaBd)
+                cls._conexion = sqlite3.connect(cls.varRutaBd, check_same_thread=False)
                 return cls._conexion
             except Exception as e:
                 print(f'Ocurrió un error: {e}')
@@ -37,6 +39,21 @@ class ClsConexion:
             varCursor = conexion.cursor()
             varCursor.execute(sql)
             return varCursor
+
+    @classmethod
+    def ejecutarTransaccionSql(cls, listaDeSentenciasSql):
+        try:
+            with ClsConexion.obtenerConexion() as conexion:
+                varCursor = conexion.cursor()
+                for sentencia in listaDeSentenciasSql:
+                    varCursor.execute(sentencia)
+
+        except Exception as e:
+            print(f'Ocurrio un error: {e}')
+        finally:
+            print('Termino la transaccion...')
+
+
 
 
 if __name__ == '__main__':

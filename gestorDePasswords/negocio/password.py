@@ -1,13 +1,19 @@
 class ClsPasswords:
 
-    def __init__(self, id=None, nombre=None, password=None, descripcion=None):
+    def __int__(self, id=None, nombre=None, password=None, descripcion=None):
         self._id = id
         self._nombre = nombre
         self._password = password
         self._descripcion = descripcion
 
     def __str__(self):
-        return f'id: {self._id}, nombre: {self._nombre}, password: {self._password}, descripcion: {self._descripcion}'
+        return f'id: {self._id}, nombre: {self._nombre}'
+
+    def cargarPropiedades(self,id):
+        self.nombre = None
+        self.password = None
+        self.descripcion = None
+
 
     @property
     def id(self):
@@ -39,6 +45,8 @@ class ClsPasswords:
 
 
 if __name__ == '__main__':
-    password1 = ClsPasswords(1, 'pepe', 'pepe123', 'nombre y 123')
+    password1 = ClsPasswords()
+    password1.__int__(1, 'pepe', 'pepe123', 'nombre y 123')
     password1.nombre = 'jooorge'
     print(password1)
+
